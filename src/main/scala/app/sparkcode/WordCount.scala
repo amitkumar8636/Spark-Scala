@@ -1,8 +1,8 @@
 package app.sparkcode
 
+
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkContext
-import org.apache.spark.sql.SparkSession
 
 object WordCount extends App {
 
@@ -15,6 +15,11 @@ object WordCount extends App {
   val wordsMap = words.map(x=>(x,1))
   val wordsCount = wordsMap.reduceByKey((x,y)=>x+y)
 
-  wordsCount.foreach(println(_))
+//1. Simple WordCount
+//  wordsCount.foreach(println(_)) // Just for Word Count
 
+//  2. Sorted WordCount
+  val sortedWordCount = wordsCount.map( x => (x._2, x._1)).sortByKey(ascending = false)
+//  sortedWordCount.foreach(println)
+  sortedWordCount.collect.foreach(println)
 }
